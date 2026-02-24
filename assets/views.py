@@ -168,6 +168,7 @@ class AssetCreateView(AdminRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['action'] = 'Create'
         context['title'] = 'Add New Asset'
+        context['user_role'] = self.request.user.role
         return context
 
 

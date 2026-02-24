@@ -30,8 +30,6 @@ class CustomUserChangeForm(UserChangeForm):
 
 class AssetForm(forms.ModelForm):
     """Form for creating and updating assets"""
-    purchase_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    
     class Meta:
         model = Asset
         fields = ['name', 'serial_number', 'category', 'location', 'status', 'quantity', 'purchase_date', 'purchase_price', 'notes']
@@ -43,8 +41,8 @@ class AssetForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'placeholder': 'Quantity'}),
             'purchase_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'purchase_price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
-            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Notes'}),
+            'purchase_price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': '0.00'}),
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Optional notes...'}),
         }
 
 
