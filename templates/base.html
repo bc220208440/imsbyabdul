@@ -419,20 +419,61 @@
             font-weight: 500;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .sidebar {
-                display: none;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1040;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
             }
 
             .main-content {
-                margin-left: 0;
-                margin-top: 56px;
-                padding: 16px;
+                margin-left: 0 !important;
+                width: 100% !important;
             }
 
             .page-header {
-                top: 56px;
+                padding: 24px 20px;
+                margin-bottom: 20px !important;
             }
+
+            .main-content > div:not(.page-header),
+            .main-content > section,
+            .main-content > form,
+            .main-content > .alert,
+            .main-content > .row,
+            .main-content > .card {
+                margin-left: 15px !important;
+                margin-right: 15px !important;
+                width: calc(100% - 30px) !important;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        /* Overlay for mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1035;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
         }
 
         .role-badge {
@@ -457,95 +498,76 @@
             color: #164e63;
         }
 
-        footer {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 0;
+        /* STATUS BADGE STYLES */
+        .status-available {
+            background-color: #d1fae5 !important;
+            color: #065f46 !important;
         }
 
-        footer p {
-            color: #cbd5e1;
-            font-size: 0.85rem;
-            font-weight: 500;
+        .status-in-use {
+            background-color: #fef3c7 !important;
+            color: #78350f !important;
         }
 
-        .form-control::placeholder {
-            color: #cbd5e1;
+        .status-in-repair {
+            background-color: #fee2e2 !important;
+            color: #991b1b !important;
         }
 
-        .btn {
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            letter-spacing: 0.3px;
+        .status-default {
+            background-color: #e2e8f0 !important;
+            color: #1e293b !important;
         }
 
-        .btn:focus {
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            letter-spacing: -0.5px;
-        }
-
-        .form-floating > label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .input-group-text {
-            background-color: #f8fafc;
-            border-color: var(--border-color);
-            font-weight: 500;
-        }
-
-        a {
-            color: var(--secondary-color);
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--accent-color);
-        }
-
-        select.form-control,
-        textarea.form-control {
-            border: 1.5px solid var(--border-color);
-            padding: 10px 12px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            background-color: #f8fafc;
-            color: var(--primary-color);
-        }
-
-        select.form-control:focus,
-        textarea.form-control:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-            background-color: white;
-        }
-
-        select.form-select {
-            border: 1.5px solid var(--border-color);
-            padding: 10px 12px;
-            border-radius: 8px;
-            background-color: #f8fafc;
-            color: var(--primary-color);
-        }
-
-        select.form-select:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        /* PRINT STYLES */
+        @media print {
+            .sidebar, .navbar, .sidebar-overlay, .btn, .messages, .breadcrumb, .card-footer, .pagination, footer {
+                display: none !important;
+            }
+            .main-content {
+                margin-left: 0 !important;
+                margin-top: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            .main-content > div:not(.page-header),
+            .main-content > section,
+            .main-content > form,
+            .main-content > .alert,
+            .main-content > .row,
+            .main-content > .card {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+            }
+            .page-header {
+                border-bottom: 2px solid #333 !important;
+                margin-bottom: 20px !important;
+                padding: 20px 0 !important;
+            }
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #eee !important;
+                break-inside: avoid;
+            }
+            body {
+                background-color: white !important;
+            }
         }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="z-index: 1030; height: 60px;">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="z-index: 1050; height: 60px;">
         <div class="container-fluid">
+            {% if user.is_authenticated %}
+            <button class="btn btn-link text-white me-2 d-lg-none" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            {% endif %}
             <a class="navbar-brand" href="{% url 'dashboard' %}">
-                <i class="fas fa-boxes"></i> Inventory System
+                <i class="fas fa-boxes"></i> <span class="d-none d-sm-inline">Inventory System</span><span class="d-inline d-sm-none">IMS</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -553,8 +575,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
+                        <li class="nav-item d-lg-none">
+                            <hr class="dropdown-divider bg-light opacity-25">
+                        </li>
                         <li class="nav-item">
-                            <span class="navbar-text me-3">
+                            <span class="navbar-text me-lg-3 d-block py-2 py-lg-0">
                                 Welcome, <strong>{{ user.first_name|default:user.username }}</strong>
                                 <span class="badge role-{{ user.role|lower }}">{{ user.role }}</span>
                             </span>
@@ -575,8 +600,11 @@
     </nav>
 
     {% if user.is_authenticated %}
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- Sidebar -->
-        <div class="sidebar" style="height: calc(100vh - 56px);">
+        <div class="sidebar" id="sidebar" style="height: calc(100vh - 60px);">
             <ul class="sidebar-menu">
                 <li>
                     <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
@@ -629,7 +657,7 @@
         <!-- Main Content -->
         <div class="main-content">
             {% if messages %}
-                <div class="messages" style="position: fixed; top: 70px; right: 20px; z-index: 1100; min-width: 300px;">
+                <div class="messages" style="position: fixed; top: 70px; right: 20px; z-index: 1100; min-width: 280px; max-width: 90%;">
                     {% for message in messages %}
                         <div class="alert alert-{{ message.tags|default:'info' }} shadow-sm alert-dismissible fade show" role="alert">
                             <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
@@ -649,11 +677,32 @@
     {% endif %}
 
     <!-- Footer -->
-        <footer class="bg-dark text-light text-center py-3 mt-5">
-        <p class="mb-0">&copy; 2026 Inventory Management System by <a href="https://abdulrehmansarwar.vercel.app" class="text-info text-decoration-none" target="_blank">Abdul Rehman</a> (bc220208440)</p>
+    <footer class="bg-dark text-light text-center py-3 mt-auto">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 Inventory Management System by <a href="https://abdulrehmansarwar.vercel.app" class="text-info text-decoration-none" target="_blank">Abdul Rehman</a> (bc220208440)</p>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (sidebarToggle && sidebar && overlay) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    overlay.classList.toggle('show');
+                });
+
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    overlay.classList.remove('show');
+                });
+            }
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
