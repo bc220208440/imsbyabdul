@@ -1,112 +1,92 @@
-# Student Setup Guide — Inventory & Asset Management System
+# 🎓 Student Setup & Lab Guide
 
-This guide helps a student run and present the project from scratch on Windows in minutes.
+This guide is designed for students to set up and present the **Inventory and Asset Management System** in a campus lab environment.
 
-## Prerequisites
-- Python 3.8 or newer
-- MySQL Server (localhost:3306)
-- A terminal (PowerShell or Command Prompt)
+## 🛠️ Phase 1: Environment Setup
 
-## 1) Get the Project
-1. Open a terminal.
-2. Navigate to the project folder:
+### 1.1 Prerequisites
+- **Python installed**: Verify by running `python --version`.
+- **MySQL installed**: Ensure the MySQL service is running.
+
+### 1.2 Installation Steps
+1. **Open Terminal**: Navigate to the project root folder.
    ```bash
    cd c:\Users\abdul\inventory_system
    ```
+2. **Create Virtual Environment**:
+   ```bash
+   python -m venv venv
+   ```
+3. **Activate Environment**:
+   - **PowerShell**: `.\venv\Scripts\Activate.ps1`
+   - **CMD**: `.\venv\Scripts\activate.bat`
+4. **Install Dependencies**:
+   ```bash
+   pip install django==6.0.2 mysqlclient
+   ```
 
-## 2) Create a Virtual Environment
-```bash
-python -m venv venv
-```
+---
 
-Activate it:
-- Windows:
-  ```bash
-  venv\Scripts\activate
-  ```
-- Mac/Linux (optional info):
-  ```bash
-  source venv/bin/activate
-  ```
+## 🗄️ Phase 2: Database Configuration
 
-## 3) Install Dependencies
-```bash
-pip install django==6.0.2
-pip install mysqlclient
-```
-
-## 4) Create the MySQL Database
-Ensure MySQL is running. Then create the database:
-```bash
-mysql -u root -p
-```
-Inside MySQL:
+### 2.1 Create Database
+Open your MySQL Command Line or Workbench and run:
 ```sql
 CREATE DATABASE inventory_db;
-EXIT;
 ```
 
-If your MySQL username/password differ, update the settings in:
-- inventory_system/settings.py → DATABASES section
-
-## 5) Apply Migrations
+### 2.2 Sync Schema & Data
+Run the following commands in your project terminal:
 ```bash
+# Apply the database structure
 python manage.py migrate
-```
 
-## 6) Load Demo Data
-Creates Admin/Manager/Viewer users and sample data:
-```bash
+# Load professional demo data (Admins, Managers, Assets)
 python manage.py create_demo_data
 ```
 
-## 7) Run the Server
+---
+
+## 🖥️ Phase 3: Running & Presenting
+
+### 3.1 Start Server
 ```bash
-python manage.py runserver 8000
+python manage.py runserver
 ```
-Open http://localhost:8000/ in your browser.
+Go to: **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**
 
-## 8) Login Credentials
-| Role    | Username | Password |
-|---------|----------|----------|
-| Admin   | admin    | password |
-| Manager | manager  | password |
-| Viewer  | viewer   | password |
+### 3.2 Presentation Flow (Live Demo)
 
-## 9) What to Demonstrate
-- Assets page: search/filter by name, serial, category, status, location.
-- Admin:
-  - Create/Edit/Delete assets
-  - Manage Categories and Locations
-  - Manage Users and assign roles
-- Manager:
-  - Update asset status and location (no create/delete)
-- Viewer:
-  - Read-only access to assets and reports
-- Reports:
-  - Assets by Location
-  - Low Stock (based on category thresholds)
+1.  **Login as Admin** (`admin` / `password`):
+    - Demonstrate **User Management**: Create a new user.
+    - Demonstrate **Asset CRUD**: Add a new laptop with a serial number.
+    - Demonstrate **Category Management**: Edit a category's stock threshold.
+2.  **Login as Manager** (`manager` / `password`):
+    - Show that the "Add Asset" button is hidden.
+    - **Update Status**: Change an asset from "Available" to "In Use".
+    - **Change Location**: Move an item to "Warehouse 1".
+3.  **Login as Viewer** (`viewer` / `password`):
+    - Show that all forms are Read-Only.
+    - Demonstrate **Search/Filter**: Search for a specific serial number.
+4.  **Reporting**:
+    - Go to **Reports** → **Low Stock**.
+    - Show the printable view using the "Print Report" button.
 
-## 10) Quick Troubleshooting
-- MySQL connection error:
-  - Verify MySQL is running and database exists.
-  - Check credentials in inventory_system/settings.py (ENGINE/NAME/USER/PASSWORD/HOST/PORT).
-- ModuleNotFoundError: MySQLdb
-  - Run: `pip install mysqlclient`
-- “No such table” error
-  - Run: `python manage.py migrate`
-- Login issues
-  - Re-run: `python manage.py create_demo_data`
+---
 
-## Optional: Verify Requirements
-Run the automated checks:
+## 🔍 Phase 4: Verification (Strict Requirements Check)
+To ensure the project meets all academic requirements, run:
 ```bash
 python test_requirements.py
 ```
-All tests should pass, confirming role-based access, CRUD, search/filtering, and reports.
+**Expected Result**: `45/45 Tests Passed`.
 
-## Submission Tips
-- Show role differences live (Admin vs Manager vs Viewer).
-- Keep venv active while presenting.
-- If using a different DB user/password, ensure settings match before running.
+---
 
+## ❓ Troubleshooting
+- **MySQL Connection Refused**: Check `inventory_system/settings.py` and ensure the `USER` and `PASSWORD` match your local MySQL configuration.
+- **Missing Module**: Ensure you are in the `venv` before running `pip install`.
+- **404 Page**: Ensure the server is running and you are logged in.
+
+---
+**Developer**: Abdul Rehman | **ID**: bc220208440
