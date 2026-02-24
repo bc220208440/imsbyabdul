@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Locations - Inventory System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h2><i class="fas fa-map-marker-alt"></i> Locations</h2>
+            <p class="text-muted">Manage asset storage locations.</p>
+        </div>
+        <div class="col-auto">
+            {% if user_role == 'ADMIN' %}
+                <a href="{% url 'location_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Location
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for location in locations %}
+        <div class="col-md-3 mb-3">
+            <div class="card h-100" style="border-left: 4px solid #6366f1;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #0f766e;">
+                        <i class="fas fa-map-pin" style="color: #6366f1;"></i> {{ location.name }}
+                    </h5>
+                    <p class="card-text text-muted small">{{ location.description|truncatewords:10 }}</p>
+                    
+                    <div class="alert" style="background-color: #cffafe; border-left: 4px solid #06b6d4; color: #164e63; margin-bottom: 16px; padding: 12px; border-radius: 6px;">
+                        <strong>{{ location.asset_count }}</strong> assets stored
+                    </div>
+                </div>
+                <div class="card-footer" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0;">
+                    <div class="btn-group btn-group-sm w-100" role="group">
+                        {% if user_role == 'ADMIN' %}
+                            <a href="{% url 'location_update' location.pk %}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{% url 'location_delete' location.pk %}" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        {% else %}
+                            <span class="text-muted" style="padding: 8px; font-size: 0.85rem;">No actions available</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert" style="background-color: #cffafe; border-left: 4px solid #06b6d4; color: #164e63;">
+                <i class="fas fa-info-circle"></i> No locations found. 
+                {% if user_role == 'ADMIN' %}<a href="{% url 'location_create' %}" style="color: #0f766e; font-weight: 600;">Create one now</a>{% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

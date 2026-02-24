@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Location - Inventory System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card border-danger mt-5">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Delete Location</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-warning"></i>
+                    <strong>Warning!</strong> Assets at this location will have their location unassigned.
+                </div>
+
+                <p class="mb-3">
+                    Are you sure you want to delete the location <strong>{{ object.name }}</strong>?
+                </p>
+
+                <div class="alert alert-light">
+                    <p class="mb-1"><strong>{{ object.name }}</strong></p>
+                    <p class="mb-0 text-muted">{{ object.description }}</p>
+                </div>
+
+                <hr>
+
+                <form method="post" class="d-flex gap-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Yes, Delete Location
+                    </button>
+                    <a href="{% url 'location_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
