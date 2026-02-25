@@ -169,7 +169,7 @@ This is the **easiest** way for a new user to run the project locally.
    - Create a virtual environment (`venv`).
    - Install all dependencies from `requirements.txt`.
    - Run database migrations.
-   - Create demo users, categories, and locations.
+   - Create **demo users, categories, and locations** (including `admin` / `manager` / `viewer`).
    - Start the Django development server on `http://127.0.0.1:8000/`.
 
 3. Open your browser and log in using the demo credentials below.
@@ -214,6 +214,16 @@ python manage.py runserver
 ```
 
 Then open `http://127.0.0.1:8000/` in your browser.
+
+> **Important for new users:**  
+> If you see **“Invalid username or password”** when trying to log in with `admin` / `password`, it usually means the demo users have **not** been created on this machine yet.  
+> Make sure you have run:
+>
+> ```bash
+> python manage.py create_demo_data
+> ```
+>
+> This command creates the `admin`, `manager`, and `viewer` accounts and seeds the predefined categories and locations. After running it once per new database, the login screen will accept the documented demo credentials.
 
 ---
 
