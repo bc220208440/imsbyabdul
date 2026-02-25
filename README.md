@@ -31,11 +31,22 @@ Generate and print clear, structured reports:
 - **Assets by Location**: Instant inventory list for any specific location.
 - **Low Stock Report**: Automated alerts for categories falling below the predefined threshold (e.g., < 5 laptops).
 
+## 🗄️ Database Information
+
+### Why SQLite?
+For academic submission and portability, **SQLite** is used because:
+- **No installation required**: It is a file-based database.
+- **Zero configuration**: No need to set up users, passwords, or permissions.
+- **Works immediately**: The system is ready to use right after unzipping.
+- **Ideal for evaluation**: Perfect for instructors to run the project without complex environment setup.
+
+In a **production** environment, the system can be easily switched to **MySQL** or **PostgreSQL** by modifying the `DATABASES` setting in `inventory_system/settings.py`.
+
 ---
 
 ## 🛠️ Technology Stack
 - **Backend**: Django 6.0.2 (Python Framework)
-- **Database**: MySQL (Structured Data Management)
+- **Database**: SQLite (Academic/Portable) | MySQL Compatible
 - **Frontend**: Bootstrap 5 + FontAwesome 6 (Responsive UI)
 - **Authentication**: Django Built-in Auth System with Custom Role Logic
 
@@ -45,7 +56,6 @@ Generate and print clear, structured reports:
 
 ### 1. Prerequisites
 - Python 3.8+
-- MySQL Server 5.7+
 - Virtual Environment (Recommended)
 
 ### 2. Setup Instructions
@@ -58,10 +68,7 @@ python -m venv venv
 venv\Scripts\activate  # Windows
 
 # Install required packages
-pip install django==6.0.2 mysqlclient
-
-# Create MySQL Database
-# mysql -u root -p -e "CREATE DATABASE inventory_db;"
+pip install django==6.0.2
 
 # Apply Database Migrations
 python manage.py migrate

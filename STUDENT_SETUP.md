@@ -6,7 +6,6 @@ This guide is designed for students to set up and present the **Inventory and As
 
 ### 1.1 Prerequisites
 - **Python installed**: Verify by running `python --version`.
-- **MySQL installed**: Ensure the MySQL service is running.
 
 ### 1.2 Installation Steps
 1. **Open Terminal**: Navigate to the project root folder.
@@ -22,18 +21,18 @@ This guide is designed for students to set up and present the **Inventory and As
    - **CMD**: `.\venv\Scripts\activate.bat`
 4. **Install Dependencies**:
    ```bash
-   pip install django==6.0.2 mysqlclient
+   pip install django==6.0.2
    ```
 
 ---
 
 ## 🗄️ Phase 2: Database Configuration
 
-### 2.1 Create Database
-Open your MySQL Command Line or Workbench and run:
-```sql
-CREATE DATABASE inventory_db;
-```
+### 2.1 Database Note
+For academic submission and portability, **SQLite** is used. 
+- **No separate installation required.**
+- **Zero configuration needed.**
+- **Ideal for evaluation environments.**
 
 ### 2.2 Sync Schema & Data
 Run the following commands in your project terminal:

@@ -4,7 +4,6 @@ Follow these steps to get the **Inventory and Asset Management System** running 
 
 ## 1. System Requirements
 - **Python**: 3.8 or higher
-- **MySQL**: 5.7 or higher
 - **Browser**: Chrome, Edge, or Firefox
 
 ## 2. Fast Setup (Windows)
@@ -15,10 +14,10 @@ python -m venv venv
 .\venv\Scripts\activate
 
 # 2. Install Packages
-pip install django==6.0.2 mysqlclient
+pip install django==6.0.2
 
-# 3. Database Setup (Ensure MySQL is running)
-# Create a database named 'inventory_db' in your MySQL client
+# 3. Database Note
+# SQLite is used by default. No separate database installation required.
 
 # 4. Migrate & Initialize
 python manage.py migrate
@@ -27,6 +26,16 @@ python manage.py create_demo_data
 # 5. Launch
 python manage.py runserver
 ```
+
+## 3. Database Information
+### Why SQLite?
+For academic submission and portability, **SQLite** is used because:
+- **No installation required**
+- **Zero configuration**
+- **Works immediately after unzip**
+- **Ideal for evaluation environments**
+
+In production, the system can easily be switched to **MySQL** or **PostgreSQL** by modifying the `DATABASES` setting in `settings.py`.
 
 ## 3. Access the System
 - **URL**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
