@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    {% if user_role == 'ADMIN' %}
+    {% if user.role == 'ADMIN' %}
         <div class="col-md-3 col-sm-6 mb-3">
             <div class="stat-card">
                 <i class="fas fa-users" style="font-size: 2.2rem; color: #1e293b; margin-bottom: 12px;"></i>
@@ -126,16 +126,16 @@
                             <i class="fas fa-list"></i> View All Assets
                         </a>
                     </div>
-                    {% if user_role == 'ADMIN' or user_role == 'MANAGER' %}
+                    {% if user.role == 'ADMIN' or user.role == 'MANAGER' %}
                         <div class="col-md-3 mb-2">
-                            {% if user_role == 'ADMIN' %}
+                            {% if user.role == 'ADMIN' %}
                                 <a href="{% url 'asset_create' %}" class="btn w-100" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 600; border: none;">
                                     <i class="fas fa-plus"></i> Add New Asset
                                 </a>
                             {% endif %}
                         </div>
                     {% endif %}
-                    {% if user_role == 'ADMIN' %}
+                    {% if user.role == 'ADMIN' %}
                         <div class="col-md-3 mb-2">
                             <a href="{% url 'user_list' %}" class="btn btn-primary w-100">
                                 <i class="fas fa-users"></i> Manage Users
@@ -194,7 +194,10 @@
                             {% empty %}
                                 <tr>
                                     <td colspan="6" class="text-center text-muted py-4">
-                                        No assets yet. <a href="{% url 'asset_create' %}">Create one now</a>
+                                No assets yet.
+                                {% if perms.assets.add_asset %}
+                                    <a href="{% url 'asset_create' %}">Create one now</a>
+                                {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

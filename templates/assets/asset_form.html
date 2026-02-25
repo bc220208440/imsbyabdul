@@ -25,45 +25,49 @@
                         </div>
                     {% endif %}
 
-                    <!-- Name Field -->
-                    <div class="mb-3">
-                        <label for="{{ form.name.id_for_label }}" class="form-label">
-                            Asset Name <span class="text-danger">*</span>
-                        </label>
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                            <div class="invalid-feedback d-block" style="color: #ef4444;">
-                                <small><i class="fas fa-exclamation-triangle"></i> {{ form.name.errors }}</small>
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Serial Number Field -->
-                    <div class="mb-3">
-                        <label for="{{ form.serial_number.id_for_label }}" class="form-label">
-                            Serial Number <span class="text-danger">*</span>
-                        </label>
-                        {{ form.serial_number }}
-                        {% if form.serial_number.errors %}
-                            <div class="invalid-feedback d-block" style="color: #ef4444;">
-                                <small><i class="fas fa-exclamation-triangle"></i> {{ form.serial_number.errors }}</small>
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="row">
-                        <!-- Category Field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.category.id_for_label }}" class="form-label">
-                                Category <span class="text-danger">*</span>
+                    {% if not status_only %}
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">
+                                Asset Name <span class="text-danger">*</span>
                             </label>
-                            {{ form.category }}
-                            {% if form.category.errors %}
+                            {{ form.name }}
+                            {% if form.name.errors %}
                                 <div class="invalid-feedback d-block" style="color: #ef4444;">
-                                    <small><i class="fas fa-exclamation-triangle"></i> {{ form.category.errors }}</small>
+                                    <small><i class="fas fa-exclamation-triangle"></i> {{ form.name.errors }}</small>
                                 </div>
                             {% endif %}
                         </div>
+
+                        <!-- Serial Number Field -->
+                        <div class="mb-3">
+                            <label for="{{ form.serial_number.id_for_label }}" class="form-label">
+                                Serial Number <span class="text-danger">*</span>
+                            </label>
+                            {{ form.serial_number }}
+                            {% if form.serial_number.errors %}
+                                <div class="invalid-feedback d-block" style="color: #ef4444;">
+                                    <small><i class="fas fa-exclamation-triangle"></i> {{ form.serial_number.errors }}</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <!-- Category Field -->
+                        {% if not status_only %}
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.category.id_for_label }}" class="form-label">
+                                    Category <span class="text-danger">*</span>
+                                </label>
+                                {{ form.category }}
+                                {% if form.category.errors %}
+                                    <div class="invalid-feedback d-block" style="color: #ef4444;">
+                                        <small><i class="fas fa-exclamation-triangle"></i> {{ form.category.errors }}</small>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
 
                         <!-- Location Field -->
                         <div class="col-md-6 mb-3">
@@ -94,31 +98,35 @@
                         </div>
 
                         <!-- Quantity Field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.quantity.id_for_label }}" class="form-label">
-                                Quantity <span class="text-danger">*</span>
-                            </label>
-                            {{ form.quantity }}
-                            {% if form.quantity.errors %}
-                                <div class="invalid-feedback d-block" style="color: #ef4444;">
-                                    <small><i class="fas fa-exclamation-triangle"></i> {{ form.quantity.errors }}</small>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Purchase Date Field -->
-                    <div class="mb-3">
-                        <label for="{{ form.purchase_date.id_for_label }}" class="form-label">
-                            Purchase Date <span class="text-danger">*</span>
-                        </label>
-                        {{ form.purchase_date }}
-                        {% if form.purchase_date.errors %}
-                            <div class="invalid-feedback d-block" style="color: #ef4444;">
-                                <small><i class="fas fa-exclamation-triangle"></i> {{ form.purchase_date.errors }}</small>
+                        {% if not status_only %}
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.quantity.id_for_label }}" class="form-label">
+                                    Quantity <span class="text-danger">*</span>
+                                </label>
+                                {{ form.quantity }}
+                                {% if form.quantity.errors %}
+                                    <div class="invalid-feedback d-block" style="color: #ef4444;">
+                                        <small><i class="fas fa-exclamation-triangle"></i> {{ form.quantity.errors }}</small>
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>
+
+                    {% if not status_only %}
+                        <!-- Purchase Date Field -->
+                        <div class="mb-3">
+                            <label for="{{ form.purchase_date.id_for_label }}" class="form-label">
+                                Purchase Date <span class="text-danger">*</span>
+                            </label>
+                            {{ form.purchase_date }}
+                            {% if form.purchase_date.errors %}
+                                <div class="invalid-feedback d-block" style="color: #ef4444;">
+                                    <small><i class="fas fa-exclamation-triangle"></i> {{ form.purchase_date.errors }}</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
 
                     <!-- Purchase Price Field (if admin) -->
                     {% if user_role == 'ADMIN' or action == 'Create' %}

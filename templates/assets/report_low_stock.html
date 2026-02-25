@@ -11,6 +11,9 @@
         </div>
         {% if low_stock_items %}
             <div class="col-auto">
+                <a href="{% url 'export_low_stock' %}" class="btn btn-success shadow-sm me-2">
+                    <i class="fas fa-file-csv"></i> Export CSV
+                </a>
                 <button onclick="window.print()" class="btn btn-secondary shadow-sm">
                     <i class="fas fa-print"></i> Print Report
                 </button>
@@ -23,27 +26,38 @@
     <div class="row">
         {% for item in low_stock_items %}
             <div class="col-md-6 mb-4">
-                <div class="card h-100" style="border-left: 4px solid #f59e0b;">
-                    <div class="card-header" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); color: white;">
+                <div class="card h-100" style="border-left: 4px solid {% if item.deficit > 0 %}#f59e0b{% else %}#10b981{% endif %};">
+                    <div class="card-header" style="background: linear-gradient(135deg, {% if item.deficit > 0 %}#f59e0b 0%, #f97316{% else %}#10b981 0%, #059669{% endif %} 100%); color: white;">
                         <h5 class="mb-0">
                             <i class="fas fa-tags"></i> {{ item.category.name }}
+                            {% if item.deficit == 0 %}
+                                <span class="badge bg-white text-success float-end" style="font-size: 0.7rem;">In Stock</span>
+                            {% else %}
+                                <span class="badge bg-white text-warning float-end" style="font-size: 0.7rem;">Low Stock</span>
+                            {% endif %}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-6 text-center">
                                 <p class="text-muted small mb-1" style="font-weight: 500;">Available</p>
-                                <h4 class="mb-0" style="color: #ef4444; font-weight: 700;">{{ item.available }}</h4>
+                                <h4 class="mb-0" style="color: {% if item.deficit > 0 %}#ef4444{% else %}#10b981{% endif %}; font-weight: 700;">{{ item.available }}</h4>
                             </div>
                             <div class="col-6 text-center">
                                 <p class="text-muted small mb-1" style="font-weight: 500;">Threshold</p>
-                                <h4 class="mb-0" style="color: #f59e0b; font-weight: 700;">{{ item.threshold }}</h4>
+                                <h4 class="mb-0" style="color: #64748b; font-weight: 700;">{{ item.threshold }}</h4>
                             </div>
                         </div>
 
-                        <div class="alert" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; color: #78350f; margin-bottom: 16px; padding: 12px; border-radius: 6px; font-size: 0.9rem;">
-                            <i class="fas fa-arrow-down me-1"></i> <strong>Deficit:</strong> {{ item.deficit }} unit{{ item.deficit|pluralize }}
-                        </div>
+                        {% if item.deficit > 0 %}
+                            <div class="alert" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; color: #78350f; margin-bottom: 16px; padding: 12px; border-radius: 6px; font-size: 0.9rem;">
+                                <i class="fas fa-arrow-down me-1"></i> <strong>Deficit:</strong> {{ item.deficit }} unit{{ item.deficit|pluralize }}
+                            </div>
+                        {% else %}
+                            <div class="alert" style="background-color: #d1fae5; border-left: 4px solid #10b981; color: #065f46; margin-bottom: 16px; padding: 12px; border-radius: 6px; font-size: 0.9rem;">
+                                <i class="fas fa-check-circle me-1"></i> <strong>Sufficient Stock</strong>
+                            </div>
+                        {% endif %}
 
                         <p class="text-muted small mb-2"><strong>Available Assets:</strong></p>
                         <ul class="list-unstyled small mb-0">

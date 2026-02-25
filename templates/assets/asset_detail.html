@@ -7,18 +7,20 @@
     <div class="row align-items-center">
         <div class="col">
             <h2><i class="fas fa-cube"></i> {{ asset.name }}</h2>
-            <p class="text-muted">
-                <code style="background-color: #f1f5f9; padding: 4px 8px; border-radius: 4px;">{{ asset.serial_number }}</code>
+            <p class="text-muted mb-0">
+                <span style="color: #fb7185; font-weight: 600; font-size: 0.9rem;">
+                    {{ asset.serial_number }}
+                </span>
             </p>
         </div>
         <div class="col-auto">
             {% if can_edit %}
-                <a href="{% url 'asset_update' asset.pk %}" class="btn btn-warning">
+                <a href="{% url 'asset_update' asset.pk %}" class="btn btn-warning me-2">
                     <i class="fas fa-edit"></i> Edit
                 </a>
             {% endif %}
             {% if can_delete %}
-                <a href="{% url 'asset_delete' asset.pk %}" class="btn btn-danger">
+                <a href="{% url 'asset_delete' asset.pk %}" class="btn btn-danger me-2">
                     <i class="fas fa-trash"></i> Delete
                 </a>
             {% endif %}
@@ -30,169 +32,152 @@
 </div>
 
 <div class="row">
-    <!-- Main Details -->
-    <div class="col-md-8">
-        <div class="card mb-4">
+    <!-- Left: main asset info -->
+    <div class="col-lg-8 col-md-7 mb-3">
+        <div class="card">
             <div class="card-header">
                 <h5 class="mb-0"><i class="fas fa-info-circle"></i> Asset Details</h5>
             </div>
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Asset Name</h6>
-                        <p class="h5" style="color: #0f766e; font-weight: 600;">{{ asset.name }}</p>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Asset Name</small>
+                        <span style="font-size:1.1rem; font-weight:600; color:#0f766e;">
+                            {{ asset.name }}
+                        </span>
                     </div>
-                    <div class="col-md-6">
-                        <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Serial Number</h6>
-                        <p class="h5"><code style="background-color: #f1f5f9; padding: 6px 10px; border-radius: 4px; color: #0f766e;">{{ asset.serial_number }}</code></p>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Serial Number</small>
+                        <code style="background-color:#f1f5f9; padding:6px 10px; border-radius:4px; color:#0f766e;">
+                            {{ asset.serial_number }}
+                        </code>
                     </div>
                 </div>
 
-                <hr style="border-color: #e2e8f0;">
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Category</small>
+                        <span class="badge" style="background-color:#cffafe; color:#164e63;">
+                            {{ asset.category.name }}
+                        </span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Status</small>
+                        <span class="badge"
+                              style="{% if asset.status == 'AVAILABLE' %}background-color:#d1fae5; color:#065f46;
+                                     {% elif asset.status == 'IN_USE' %}background-color:#fef3c7; color:#78350f;
+                                     {% elif asset.status == 'IN_REPAIR' %}background-color:#fee2e2; color:#991b1b;
+                                     {% else %}background-color:#e2e8f0; color:#1e293b;{% endif %}
+                                     padding:8px 12px; font-size:0.9rem;">
+                            {{ asset.get_status_display }}
+                        </span>
+                    </div>
+                </div>
 
                 <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Category</h6>
-                        <p>
-                            <span class="badge" style="background-color: #cffafe; color: #164e63; font-size: 0.85rem; padding: 6px 12px;">{{ asset.category.name }}</span>
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Status</h6>
-                        <p>
-                            <span class="badge" style="
-                                {% if asset.status == 'AVAILABLE' %}background-color: #d1fae5; color: #065f46;
-                                {% elif asset.status == 'IN_USE' %}background-color: #fef3c7; color: #78350f;
-                                {% elif asset.status == 'IN_REPAIR' %}background-color: #fee2e2; color: #991b1b;
-                                {% else %}background-color: #e2e8f0; color: #1e293b;{% endif %}
-                                font-size: 0.95rem; padding: 8px 12px;">
-                                {{ asset.get_status_display }}
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Location</small>
+                        {% if asset.location %}
+                            <span style="color:#475569;">
+                                <i class="fas fa-map-marker-alt" style="color:#6366f1;"></i>
+                                {{ asset.location.name }}
                             </span>
-                        </p>
+                        {% else %}
+                            <span class="text-muted">Not assigned</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Purchase Date</small>
+                        <span style="color:#475569;">
+                            {{ asset.purchase_date|date:'M d, Y' }}
+                        </span>
                     </div>
                 </div>
 
-                <hr style="border-color: #e2e8f0;">
-
                 <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Location</h6>
-                        <p class="h6" style="color: #475569;">
-                            {% if asset.location %}
-                                <i class="fas fa-map-marker-alt" style="color: #6366f1;"></i> {{ asset.location.name }}
-                            {% else %}
-                                <span class="text-muted">Not assigned</span>
-                            {% endif %}
-                        </p>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Quantity</small>
+                        <span style="color:#475569; font-weight:600;">
+                            {{ asset.quantity }}
+                        </span>
                     </div>
-                    <div class="col-md-6">
-                        <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Purchase Date</h6>
-                        <p class="h6" style="color: #475569;">{{ asset.purchase_date|date:'F d, Y' }}</p>
-                    </div>
-                </div>
-
-                <hr style="border-color: #e2e8f0;">
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Purchase Price</h6>
-                        <p class="h6" style="color: #475569;">
-                            {% if asset.purchase_price %}
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Purchase Price</small>
+                        {% if asset.purchase_price %}
+                            <span style="color:#475569;">
                                 PKR <strong>{{ asset.purchase_price|floatformat:2 }}</strong>
-                            {% else %}
-                                <span class="text-muted">Not specified</span>
-                            {% endif %}
-                        </p>
+                            </span>
+                        {% else %}
+                            <span class="text-muted">Not specified</span>
+                        {% endif %}
                     </div>
-                    {% if asset.assigned_to %}
-                        <div class="col-md-6">
-                            <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Assigned To</h6>
-                            <p class="h6" style="color: #475569;">{{ asset.assigned_to.get_full_name|default:asset.assigned_to.username }}</p>
-                        </div>
-                    {% endif %}
                 </div>
 
                 {% if asset.notes %}
-                    <hr style="border-color: #e2e8f0;">
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <h6 class="text-muted" style="font-weight: 600; font-size: 0.85rem;">Notes</h6>
-                            <p style="color: #475569;">{{ asset.notes }}</p>
-                        </div>
+                    <hr style="border-color:#e2e8f0;">
+                    <div class="mb-2">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Notes</small>
+                        <p class="mb-0" style="color:#475569;">{{ asset.notes }}</p>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Sidebar Info -->
-    <div class="col-md-4">
-        <!-- Timeline -->
-        <div class="card mb-4">
+    <!-- Right: meta info -->
+    <div class="col-lg-4 col-md-5 mb-3">
+        <div class="card mb-3">
             <div class="card-header">
                 <h5 class="mb-0"><i class="fas fa-history"></i> Timeline</h5>
             </div>
             <div class="card-body">
-                <div class="timeline-item">
-                    <p class="text-muted mb-1" style="font-weight: 500; font-size: 0.85rem;">Created</p>
-                    <p class="h6 mb-3" style="color: #0f766e; font-weight: 600;">{{ asset.created_at|date:'F d, Y \a\t H:i' }}</p>
+                <div class="mb-3">
+                    <small class="text-muted d-block mb-1" style="font-weight:600;">Created</small>
+                    <div style="color:#0f766e; font-weight:600;">
+                        {{ asset.created_at|date:'M d, Y \\a\\t H:i' }}
+                    </div>
                     {% if asset.created_by %}
-                        <small class="text-muted">by {{ asset.created_by.get_full_name|default:asset.created_by.username }}</small>
+                        <small class="text-muted">
+                            by {{ asset.created_by.get_full_name|default:asset.created_by.username }}
+                        </small>
                     {% endif %}
                 </div>
 
                 {% if asset.updated_at != asset.created_at %}
-                    <hr style="border-color: #e2e8f0;">
-                    <div class="timeline-item">
-                        <p class="text-muted mb-1" style="font-weight: 500; font-size: 0.85rem;">Last Updated</p>
-                        <p class="h6 mb-3" style="color: #0f766e; font-weight: 600;">{{ asset.updated_at|date:'F d, Y \a\t H:i' }}</p>
+                    <hr style="border-color:#e2e8f0;">
+                    <div class="mb-0">
+                        <small class="text-muted d-block mb-1" style="font-weight:600;">Last Updated</small>
+                        <div style="color:#0f766e; font-weight:600;">
+                            {{ asset.updated_at|date:'M d, Y \\a\\t H:i' }}
+                        </div>
                         {% if asset.updated_by %}
-                            <small class="text-muted">by {{ asset.updated_by.get_full_name|default:asset.updated_by.username }}</small>
+                            <small class="text-muted">
+                                by {{ asset.updated_by.get_full_name|default:asset.updated_by.username }}
+                            </small>
                         {% endif %}
                     </div>
                 {% endif %}
             </div>
         </div>
 
-        <!-- Status Info -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Summary</h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <small class="text-muted d-block mb-2" style="font-weight: 600;">Status</small>
-                    <span class="badge" style="
-                        {% if asset.status == 'AVAILABLE' %}background-color: #d1fae5; color: #065f46;
-                        {% elif asset.status == 'IN_USE' %}background-color: #fef3c7; color: #78350f;
-                        {% elif asset.status == 'IN_REPAIR' %}background-color: #fee2e2; color: #991b1b;
-                        {% else %}background-color: #e2e8f0; color: #1e293b;{% endif %}
-                        font-size: 1rem; padding: 10px 15px; font-weight: 600;">
-                        {{ asset.get_status_display }}
-                    </span>
+        {% if asset.assigned_to %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-user"></i> Assigned To</h5>
                 </div>
-                <div class="mb-3">
-                    <small class="text-muted d-block mb-2" style="font-weight: 600;">Category</small>
-                    <span class="badge" style="background-color: #cffafe; color: #164e63; font-size: 1rem; padding: 10px 15px; font-weight: 600;">
-                        {{ asset.category.name }}
-                    </span>
+                <div class="card-body">
+                    <p class="mb-1" style="color:#0f766e; font-weight:600;">
+                        {{ asset.assigned_to.get_full_name|default:asset.assigned_to.username }}
+                    </p>
+                    <small class="text-muted">Manager responsible for this asset.</small>
                 </div>
-                {% if asset.location %}
-                    <div class="mb-3">
-                        <small class="text-muted d-block mb-2" style="font-weight: 600;">Location</small>
-                        <div class="alert" style="background-color: #f0f4f8; border-left: 4px solid #6366f1; padding: 10px; border-radius: 6px; margin-bottom: 0; color: #475569;">
-                            <i class="fas fa-map-marker-alt" style="color: #6366f1;"></i> {{ asset.location.name }}
-                        </div>
-                    </div>
-                {% endif %}
             </div>
-        </div>
+        {% endif %}
 
-        <!-- Actions -->
         {% if can_edit %}
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-bolt"></i> Actions</h5>
+                    <h5 class="mb-0"><i class="fas fa-bolt"></i> Quick Actions</h5>
                 </div>
                 <div class="card-body">
                     <a href="{% url 'asset_update' asset.pk %}" class="btn btn-warning w-100 mb-2">
@@ -208,9 +193,4 @@
         {% endif %}
     </div>
 </div>
-
-<!-- Back Button -->
-<div class="mt-4">
-    <a href="{% url 'asset_list' %}" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Back to Assets
-    </a>
+{% endblock %}

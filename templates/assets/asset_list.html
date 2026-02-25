@@ -9,7 +9,7 @@
             <h2><i class="fas fa-cube"></i> Assets</h2>
             <p class="text-muted">Manage and track all inventory assets.</p>
         </div>
-        {% if user_role == 'ADMIN' %}
+        {% if user.role == 'ADMIN' %}
             <div class="col-auto">
                 <a href="{% url 'asset_create' %}" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Add New Asset
@@ -100,12 +100,12 @@
                                     <a href="{% url 'asset_detail' asset.pk %}" class="btn btn-sm" title="View" style="background-color: #cffafe; color: #164e63; border: none; font-weight: 500;">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    {% if user_role == 'ADMIN' or user_role == 'MANAGER' %}
+                                    {% if user.role == 'ADMIN' or user.role == 'MANAGER' %}
                                         <a href="{% url 'asset_update' asset.pk %}" class="btn btn-warning btn-sm" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     {% endif %}
-                                    {% if user_role == 'ADMIN' %}
+                                    {% if user.role == 'ADMIN' %}
                                         <a href="{% url 'asset_delete' asset.pk %}" class="btn btn-danger btn-sm" title="Delete">
                                             <i class="fas fa-trash"></i>
                                         </a>
@@ -117,7 +117,7 @@
                         <tr>
                             <td colspan="7" class="text-center text-muted py-4">
                                 No assets found. 
-                                {% if user_role == 'ADMIN' %}<a href="{% url 'asset_create' %}">Create one now</a>{% endif %}
+                                {% if user.role == 'ADMIN' %}<a href="{% url 'asset_create' %}">Create one now</a>{% endif %}
                             </td>
                         </tr>
                     {% endfor %}

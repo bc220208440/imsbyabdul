@@ -36,5 +36,7 @@ urlpatterns = [
     
     # Reports
     path('reports/assets-by-location/', views.AssetsByLocationReportView.as_view(), name='report_assets_by_location'),
+    path('reports/assets-by-location/export/', views.ExportAssetsByLocationCSV.as_view(), name='export_assets_by_location'),
     path('reports/low-stock/', views.LowStockReportView.as_view(), name='report_low_stock'),
+    path('reports/low-stock/export/', views.ExportLowStockCSV.as_view(), name='export_low_stock'),
 ]
