@@ -160,7 +160,7 @@ This is the **easiest** way for a new user to run the project locally.
 1. Open **PowerShell** or **Command Prompt** and run:
 
    ```bash
-   git clone https://github.com/<your-username>/imsbyabdul.git
+   git clone https://github.com/bc220208440/fypbyabdul
    cd imsbyabdul
    .\setup.bat
    ```
